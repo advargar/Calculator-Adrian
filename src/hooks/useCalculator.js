@@ -1,25 +1,23 @@
-import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { addNumber, result, clear } from "../redux/slices/calculatorSlices";
 
+const useCalculator = () => {
+  const number = useSelector((state) => state.calculator.number);
+  const dispatch = useDispatch();
 
-export const useCalculator = () => {
-    const [value, setValue] = useState('');
+  function handleChange(numero) {
+    dispatch(addNumber(numero));
+  }
 
-    const handleChange = (e) =>{
-      setValue( value + e.target.value);
-    }
+  function handleClear() {
+    dispatch(clear());
+  }
 
-    const handleClear = () => {
-      setValue('');
-    }
+  function handleResult() {
+    dispatch(result());
+  }
 
-    const handleResult = () => {
-      try {
-        setValue(eval(value));
-      } catch (error) {
-        setValue('Error');
-      }
-    }
+  return [handleChange, handleClear, handleResult, number];
+};
 
-
-  return [ handleChange, handleClear, handleResult, value ];
-}
+export default useCalculator;
